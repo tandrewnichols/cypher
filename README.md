@@ -2,6 +2,8 @@
 
 # cypher
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tandrewnichols/cypher.svg)](https://greenkeeper.io/)
+
 A fluent API for constructing neo4j cypher queries.
 
 ## Installation
