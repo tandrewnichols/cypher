@@ -8,7 +8,7 @@ A fluent API for constructing neo4j cypher queries.
 
 ## Installation
 
-`npm install --save cypher`
+`npm install --save @tandrewnichols/cypher`
 
 ## Summary
 

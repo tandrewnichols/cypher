@@ -7,7 +7,7 @@
     "test": "mocha test/**/*.js",
     "watch": "npm run test -- --watch --reporter dot",
     "pretest": "eslint lib/**/*.js --config .eslint.json",
-    "travis": "node scripts/matches v4 && npm run test:coverage || npm run test",
+    "travis": "node scripts/matches v6 && npm run test:coverage || npm run test",
     "cover": "istanbul cover --root ./lib --dir coverage -x=scripts/** _mocha -- test/**/*.js",
     "codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "test:coverage": "npm run cover && npm run codeclimate",
