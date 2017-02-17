@@ -2,12 +2,12 @@ language: node_js
 sudo: false
 addons:
   code_climate:
-    repo_token: 'TODO'
+    repo_token: 'a10217268a7e175f31ef31f9ec66c054f7432740305139a298ffd8503eb21b0f'
 install:
   - "npm install npm -g"
   - "npm install"
 script:
-  - "gulp travis"
+  - "npm run travis"
 node_js:
   - "6"
   - "7"
