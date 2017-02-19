@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "lib/cypher.js",
   "scripts": {
-    "test": "mocha test/**/*.js",
+    "test": "mocha test/**/*.js --require should",
     "watch": "npm run test -- --watch --reporter dot",
     "pretest": "eslint lib/**/*.js --config .eslint.json",
     "travis": "node scripts/matches v6 && npm run test:coverage || npm run test",
@@ -39,10 +39,12 @@
     "url": "https://github.com/tandrewnichols/cypher/issues"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=6"
   },
   "homepage": "https://github.com/tandrewnichols/cypher",
-  "dependencies": {},
+  "dependencies": {
+    "letters": "0.0.2"
+  },
   "devDependencies": {
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
