@@ -89,6 +89,11 @@ describe('cypher', function() {
       let str = new Cypher().match('n').withRelationship().to({ name: 'John' }).build();
       str.should.equal("MATCH (n)-->({ name: 'John' })");
     });
+
+    it('should make the previous named relationship an outgoing one', function() {
+      let str = new Cypher().match('n').withRelationship('r').to('a').build();
+      str.should.equal('MATCH (n)-[r]->(a)');
+    });
   });
 
   describe('.from', function() {
@@ -105,6 +110,11 @@ describe('cypher', function() {
     it('should work with properties where the node is unnamed', function() {
       let str = new Cypher().match('n').withRelationship().from({ name: 'John' }).build();
       str.should.equal("MATCH (n)<--({ name: 'John' })");
+    });
+
+    it('should make the previous named relationship an incoming one', function() {
+      let str = new Cypher().match('n').withRelationship('r').from('a').build();
+      str.should.equal('MATCH (n)<-[r]-(a)');
     });
   });
 });
