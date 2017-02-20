@@ -18,6 +18,13 @@ describe('cypher', function() {
     });
   });
 
+  describe('.path', function() {
+    it('should augment the most recent node to assign the path', function() {
+      let str = new Cypher().match('n').withRelationship('r').to('m').path('p').build();
+      str.should.equal('MATCH p =(n)-[r]->(m)');
+    });
+  });
+
   describe('.withLabel', function() {
     it('should set the type of a previous node', function() {
       let str = new Cypher().match('n').withLabel('Person').build();
@@ -35,19 +42,19 @@ describe('cypher', function() {
     });
   });
 
-  describe('.withType', function() {
+  describe('.ofType', function() {
     it('should set the type of a previous relationship', function() {
-      let str = new Cypher().match('n').withRelationship('r').withType('Person').build();
+      let str = new Cypher().match('n').withRelationship('r').ofType('Person').build();
       str.should.equal('MATCH (n)-[r:Person]-()');
     });
 
     it('should allow an array of types', function() {
-      let str = new Cypher().match('n').withRelationship('r').withType(['Person', 'Mailman']).build();
+      let str = new Cypher().match('n').withRelationship('r').ofType(['Person', 'Mailman']).build();
       str.should.equal('MATCH (n)-[r:Person|:Mailman]-()');
     });
 
     it('should wrap types with spaces in backticks', function() {
-      let str = new Cypher().match('n').withRelationship('r').withType('Software Engineer').build();
+      let str = new Cypher().match('n').withRelationship('r').ofType('Software Engineer').build();
       str.should.equal(`MATCH (n)-[r:\`Software Engineer\`]-()`);
     });
   });
@@ -115,6 +122,50 @@ describe('cypher', function() {
     it('should make the previous named relationship an incoming one', function() {
       let str = new Cypher().match('n').withRelationship('r').from('a').build();
       str.should.equal('MATCH (n)<-[r]-(a)');
+    });
+  });
+
+  describe('.ofVariableLength', function() {
+    it('should make the previous relationship a variable-length one', function() {
+      let str = new Cypher().match('n').withRelationship('r').ofType('Person').ofVariableLength().build();
+      str.should.equal('MATCH (n)-[r:Person*]-()');
+    });
+
+    it('should allow only a start', function() {
+      let str = new Cypher().match('n').withRelationship('r').ofVariableLength(2).build();
+      str.should.equal('MATCH (n)-[r*2]-()');
+    });
+
+    it('should allow a start and an end', function() {
+      let str = new Cypher().match('n').withRelationship('r', { foo: 'bar' }).ofVariableLength(2, 5).build();
+      str.should.equal("MATCH (n)-[r*2..5 { foo: 'bar' }]-()");
+    });
+
+    it('should allow an end only', function() {
+      let str = new Cypher().match('n').withRelationship('r', { foo: 'bar' }).ofType('Friend').ofVariableLength(null, 5).build();
+      str.should.equal("MATCH (n)-[r:Friend*..5 { foo: 'bar' }]-()");
+    });
+  });
+
+  describe('.return', function() {
+    it('should return a single variable', function() {
+      let str = new Cypher().match('n').return('n').build();
+      str.should.equal(`MATCH (n)\nRETURN n`);
+    });
+
+    it('should return a variable path', function() {
+      let str = new Cypher().match('n').return('n.foo').build();
+      str.should.equal('MATCH (n)\nRETURN n.foo');
+    });
+
+    it('should return multiple variables', function() {
+      let str = new Cypher().match('n').return('n', 'o').build();
+      str.should.equal('MATCH (n)\nRETURN n, o');
+    });
+
+    it('should return multiple variables and/or paths', function() {
+      let str = new Cypher().match('n').return('n', 'o.foo', 'a.bar', 'c').build();
+      str.should.equal('MATCH (n)\nRETURN n, o.foo, a.bar, c');
     });
   });
 });
